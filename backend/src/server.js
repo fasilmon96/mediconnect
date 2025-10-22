@@ -1,14 +1,18 @@
 import express from "express";
-import "dotenv/config";
 import AuthRoute from "./router/auth_route.js";
+import  {ENV} from "./lib/env.js";
+import { connectDB } from "./lib/db.js";
+import cookieParser from "cookie-parser";
 
 
 
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = ENV.PORT || 5000 ;
 
  app.use(express.json());
+ app.use(cookieParser());
+
 
 
 
@@ -18,4 +22,5 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT , () => {
   console.log("Server is running http://localhost:" + PORT)
+  connectDB();
 })
