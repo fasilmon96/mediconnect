@@ -1,5 +1,6 @@
 import express from "express";
 import AuthRoute from "./router/auth_route.js";
+import DoctorRoute from "./router/doctor_route.js";
 import  {ENV} from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
@@ -17,6 +18,7 @@ const PORT = ENV.PORT || 5000 ;
 
 
  app.use("/api/auth", AuthRoute);
+ app.use("/api/doctors", DoctorRoute);
 
 
 

@@ -19,4 +19,15 @@ export const generateToken = (userId , res) =>{
   return token
   
 };
+
+
+export const  generateAvatar = (name , gender) =>{
+
+   const username = name.replace(/\s+/g, "").toLowerCase();
+   const base = "https://avatar.iran.liara.run/public";
+   
+   if(gender === "female") return `${base}/girl?username=${username}`
+   
+   return `${base}/boy?username=${username}`
+}
  
