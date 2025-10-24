@@ -1,0 +1,71 @@
+import mongoose from "mongoose";
+import { generateAvatar } from "../lib/utils.js";
+
+
+
+export const doctorSchema = new mongoose.Schema({
+
+    name : {
+       type : String,
+       required : true,
+    },
+
+    email : {
+        type : String , 
+        required : true , 
+        unique : true
+    },
+
+    phone : {
+        type : String,
+        required : true ,
+    },
+
+    speciality : {
+        type : String , 
+        required : true ,
+    },
+
+    bio : {
+        type : String ,
+        required : true
+    },
+
+    imageUrl : {
+        type : String ,
+    },
+
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: true,
+    },
+
+    isActive : {
+        type : Boolean,
+        default : true
+    },
+
+}, 
+   {
+    timestamps : true
+   }
+);
+
+doctorSchema.pre("save", function (next) {
+  if (!this.imageUrl) {
+    this.imageUrl = generateAvatar(this.name, this.gender);
+  }
+  next();
+});
+
+
+
+const Doctor = mongoose.model("Doctor" , doctorSchema)
+
+export default Doctor;
+
+
+
+
+
