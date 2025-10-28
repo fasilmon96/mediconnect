@@ -5,63 +5,70 @@ import { generateAvatar } from "../lib/utils.js";
 
 export const doctorSchema = new mongoose.Schema({
 
-    name : {
-       type : String,
-       required : true,
+    name: {
+        type: String,
+        required: true,
     },
 
-    email : {
-        type : String , 
-        required : true , 
-        unique : true
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
 
-    phone : {
-        type : String,
-        required : true ,
+    phone: {
+        type: String,
+        required: true,
     },
 
-    speciality : {
-        type : String , 
-        required : true ,
+    speciality: {
+        type: String,
+        required: true,
     },
 
-    bio : {
-        type : String ,
-        required : true
+    bio: {
+        type: String,
+        required: true
     },
 
-    imageUrl : {
-        type : String ,
+    imageUrl: {
+        type: String,
     },
 
     gender: {
-      type: String,
-      enum: ["male", "female"],
-      required: true,
+        type: String,
+        enum: ["male", "female"],
+        required: true,
     },
 
-    isActive : {
-        type : Boolean,
-        default : true
+    isActive: {
+        type: Boolean,
+        default: true
     },
 
-}, 
-   {
-    timestamps : true
-   }
+    appointments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Appointment"
+        }
+    ]
+
+},
+    {
+        timestamps: true
+    }
 );
 
 doctorSchema.pre("save", function (next) {
-  if (!this.imageUrl) {
-    this.imageUrl = generateAvatar(this.name, this.gender);
-  }
-  next();
+    if (!this.imageUrl) {
+        this.imageUrl = generateAvatar(this.name, this.gender);
+    }
+    next();
 });
 
 
 
-const Doctor = mongoose.model("Doctor" , doctorSchema)
+const Doctor = mongoose.model("Doctor", doctorSchema)
 
 export default Doctor;
 

@@ -34,18 +34,25 @@ export const createDoctor = async (req, res) => {
 
 };
 
-
 export const getDoctor = async (_, res) => {
+  try {
+    const doctors = await Doctor.find({}).populate("appointments");
 
-    try {
-        const doctors = await Doctor.find({});
-        res.json({ doctors })
-    } catch (error) {
-        console.log("Error in getDoctorController", error)
-        res.status(500).json({ message: "Internal Server Error" })
-    }
+    const doctorData = doctors.map((doc) => ({
+      id: doc._id,
+      name: doc.name,
+      email: doc.email,
+      speciality: doc.speciality,
+      appointmentCount: doc.appointments.length,
+    }));
 
+    res.json({ doctors: doctorData });
+  } catch (error) {
+    console.log("Error in getDoctorController", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
+
 
 
 export const editDoctor = async (req, res) => {
