@@ -6,11 +6,11 @@ import { createDoctor, deleteDoctor, editDoctor, getDoctor } from "../controller
 const router = express.Router();
 
 
+ router.use(protectRoute);
 
-router.post("/create" , /*protectRoute , adminRoute */ createDoctor)
-router.get("/getDoctor" , /*protectRoute */ getDoctor)
-router.put("/editDoctor/:id" , /*protectRoute , adminRoute */ editDoctor )
-router.delete("/deleteDoctor/:id" , /*protectRoute , adminRoute */ deleteDoctor )
+router.post("/create" , adminRoute , createDoctor)
+router.get("/getDoctor"   , getDoctor)
+router.put("/editDoctor/:id" , adminRoute , editDoctor )
 
 
 
