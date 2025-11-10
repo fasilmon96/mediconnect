@@ -8,9 +8,9 @@ export const createDoctor = async (req, res) => {
 
     try {
 
-        const { name, email, phone, speciality, bio, gender } = req.body;
+        const { name, email, phone, speciality, gender , isActive } = req.body;
 
-        if (!name, !email, !phone, !speciality, !bio, !gender) {
+        if (!name, !email, !phone, !speciality, !gender , !isActive) {
             return res.status(400).json({ message: "All fields are required" })
         }
 
@@ -19,8 +19,8 @@ export const createDoctor = async (req, res) => {
             email,
             phone,
             speciality,
-            bio,
-            gender
+            gender,
+            isActive
 
         })
         await doctor.save();
@@ -37,13 +37,16 @@ export const createDoctor = async (req, res) => {
 export const getDoctor = async (_, res) => {
   try {
     const doctors = await Doctor.find({}).populate("appointments");
-
     const doctorData = doctors.map((doc) => ({
       id: doc._id,
       name: doc.name,
       email: doc.email,
       speciality: doc.speciality,
-      appointmentCount: doc.appointments.length,
+      gender : doc.gender,
+      phone : doc.phone,
+      isActive : doc.isActive,
+      image : doc.imageUrl,
+      appointmentCount: doc.appointments ? doc.appointments.length : "0",
     }));
 
     res.json({ doctors: doctorData });

@@ -32,6 +32,7 @@ const userSchema = new mongose.Schema({
             ref: "Appointment"
         }
     ]
+
 },
     {
         timestamps: true

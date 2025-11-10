@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
+import Signup from "./Signup";
+import { useState } from "react";
+import Login from "./Login";
+
+
 
 function Header() {
+  
+  const [isOpen , setIsOpen] = useState(false);
+  const [isOpened , setIsOpened] = useState(false);
+
   return (
     <header className="fixed top-0 right-0 left-0 z-50 px-6 py-2 border-b border-border/50 bg-[#222222] backdrop-blur-md h-16">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -23,15 +32,20 @@ function Header() {
 
         {/* Right: Buttons */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" className="text-gray-300 hover:text-white">
+          <Button variant="ghost" className="text-gray-300 hover:text-white"
+           onClick =  {()=> setIsOpened(true)}
+          >
             Login
           </Button>
           <Button
+            onClick =  {()=> setIsOpen(true)}
             className="bg-primary hover:bg-primary/70 text-black rounded-lg px-4 py-2"
           >
             Sign Up
           </Button>
         </div>
+         <Signup open = {isOpen} close = {()=> setIsOpen(false)}/>
+         <Login open = {isOpened} close = {()=> setIsOpened(false)}/>
       </div>
     </header>
   );

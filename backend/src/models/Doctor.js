@@ -26,18 +26,13 @@ export const doctorSchema = new mongoose.Schema({
         required: true,
     },
 
-    bio: {
-        type: String,
-        required: true
-    },
-
     imageUrl: {
         type: String,
     },
 
     gender: {
         type: String,
-        enum: ["male", "female"],
+        enum: ["Male", "Female"],
         required: true,
     },
 
