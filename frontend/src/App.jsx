@@ -1,32 +1,37 @@
-// import { useEffect } from "react";
-// import { useAuthStore } from "./store/useAuthStore"
+import { useEffect } from "react";
+import { useAuthStore } from "./store/useAuthStore"
 import { Routes, Route, Navigate } from "react-router-dom";
 
 
 import HomePage from "./pages/HomePage";
-// import DashboardPage from "./pages/DashboardPage";
+import DashboardPage from "./pages/DashboardPage";
+import LoaderUI from "./components/landing/LoaderUI";
+import AppointmentPage from "./pages/AppointmentPage";
+import AdminPage from "./pages/AdminPage";
+import NavBar from "./components/landing/NavBar";
 // import AdminPage from "./pages/AdminPage";
-// import { Button } from "./components/ui/button";
 
 function App() {
 
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
-  // const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth])
 
-  // useEffect(() => {
-  //   checkAuth();
-  // }, [checkAuth])
-
-
-  // if (isCheckingAuth) return <p>checking.....</p>
-
+  
+  if (isCheckingAuth) return <LoaderUI/>
 
   return (
     <div >
-      <HomePage/>
-        {/* <Routes>
+        {authUser && <NavBar user = {authUser}/>}
+        <Routes>
            <Route path="/" element ={authUser ? <DashboardPage/> : <HomePage/>}/>
-        </Routes> */}
+           <Route path="/appointment" element = {authUser ? <AppointmentPage/> : <Navigate to={"/"}/>}/>
+           <Route path="/admin" element = {authUser?.role === "admin" ? <AdminPage/> : <Navigate to={"/"}/>}/>
+           <Route path="/*" element = {!authUser ? <HomePage/> : <Navigate to={"/"}/>}/>
+           
+        </Routes>
     </div>
   )
 }

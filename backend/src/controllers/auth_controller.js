@@ -12,16 +12,16 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
         if (password.length < 6) {
-            return res.status(400).json({ message: "Password must be at least 6 charcter" });
+            return res.status(401).json({ message: "Password must be at least 6 charcter" });
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return res.status(400).json({ message: "Invalid email format" });
+            return res.status(401).json({ message: "Invalid email format" });
         }
 
         const user = await User.findOne({ email });
         if (user) {
-            return res.status(400).json({ message: "Email already exists" });
+            return res.status(401).json({ message: "Email already exists" });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -83,7 +83,7 @@ export const login = async (req, res) => {
 
 
 export const logout = async (_ ,res) =>{   
-    res.cookie("med" ,"" , {maxAge : 0})
+    res.cookie("jwt" ,"" , {maxAge : 0})
     res.status(200).json({message : "Logout successfuly!"})
 };
 
