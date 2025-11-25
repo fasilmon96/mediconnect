@@ -39,3 +39,59 @@ export const formatMoblie = (value) => {
   return `${phoneNumber.slice(0, 5)}-${phoneNumber.slice(5, 10)}`;
 };
 
+
+
+export const getGreeting = () => {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) return "Good Morning";
+  if (hour >= 12 && hour < 17) return "Good Afternon";
+  if (hour >= 17 && hour < 21) return "Good Evening";
+  return "Good Night"
+}
+
+
+
+export const getNext5Days = () => {
+  const dates = [];
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  for (let i = 0; i < 5; i++) {
+    const date = new Date(tomorrow);
+    date.setDate(date.getDate() + i);
+    dates.push(date.toISOString().split("T")[0]);
+  }
+
+  return dates;
+};
+
+
+export const getAvailableTimeSlots = () => {
+  return [
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+  ]
+}
+
+
+export const APPOINTMENT_TYPES = [
+  { id: "consultation", name: "Consultation", duration: "30 min", price: "$60" },
+  { id: "followup", name: "Follow-up Visit", duration: "20 min", price: "$40" },
+  { id: "checkup", name: "Routine Checkup", duration: "45 min", price: "$80" },
+  { id: "emergency", name: "Emergency Visit", duration: "30 min", price: "$150" },
+  { id: "procedure", name: "Minor Procedure", duration: "60 min", price: "$200" },
+];
+
+
+

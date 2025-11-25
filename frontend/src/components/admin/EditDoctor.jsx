@@ -27,7 +27,7 @@ function EditDoctor({ openEdit,data, closeEdit }) {
     };
 
     const handleSave = () => {
-        updateMutation.mutate({ ...editForm ,}, { onSuccess: handleClose });
+        updateMutation.mutate({ id:data.id, data: editForm }, { onSuccess: handleClose });
     };
 
     const handleClose = () => {

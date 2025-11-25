@@ -1,7 +1,7 @@
 import { Calendar, HomeIcon } from 'lucide-react'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Button } from '../ui/button'
+import { Button } from './ui/button'
 import { useAuthStore } from '@/store/useAuthStore'
 
 function NavBar({user}) {

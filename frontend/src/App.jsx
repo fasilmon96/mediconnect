@@ -6,10 +6,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import LoaderUI from "./components/landing/LoaderUI";
-import AppointmentPage from "./pages/AppointmentPage";
 import AdminPage from "./pages/AdminPage";
-import NavBar from "./components/landing/NavBar";
-// import AdminPage from "./pages/AdminPage";
+import NavBar from "./components/NavBar";
+import AppointmentPage from "./pages/AppointmentPage";
 
 function App() {
 

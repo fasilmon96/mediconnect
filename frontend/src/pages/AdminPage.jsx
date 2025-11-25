@@ -1,12 +1,19 @@
-import AdminStats from "@/components/landing/AdminStats"
-import DoctorMangement from "@/components/landing/DoctorMangement"
-import RecentAppointments from "@/components/landing/RecentAppointments";
+import AdminStats from "@/components/admin/AdminStats"
+import DoctorMangement from "@/components/admin/DoctorMangement";
+import RecentAppointments from "@/components/admin/RecentAppointments";
 import { useAuthStore } from "@/store/useAuthStore"
+import { useFecthAppointment } from "@/hooks/useAppointment";
+import { useFetchDoctors } from "@/hooks/useDoctor";
 
 function AdminPage() {
 
-
    const {authUser} = useAuthStore();
+
+     const { data: doctors = [] } = useFetchDoctors();
+
+   const {data } = useFecthAppointment();
+
+   const totalAppointments =  data?.totalAppointments ?? [];
 
 
 
@@ -36,11 +43,16 @@ function AdminPage() {
           </div>
        </div>
 
-       <AdminStats/>
+       <AdminStats 
+       totalAppointments = {totalAppointments}
+       doctors = {doctors}
+       />
 
        <DoctorMangement/>
 
-       <RecentAppointments/>
+       <RecentAppointments
+        totalAppointments = {totalAppointments}
+       />
        
     </div>
   )

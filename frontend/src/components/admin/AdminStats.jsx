@@ -1,9 +1,9 @@
 import { Calendar, UserCheck2, Users } from "lucide-react"
 import { useFetchDoctors } from "@/hooks/useDoctor";
 
-function AdminStats() {
+function AdminStats({doctors , totalAppointments}) {
 
-  const { data: doctors = [] } = useFetchDoctors();
+
 
 
   return (
@@ -34,7 +34,7 @@ function AdminStats() {
           <Calendar size={30} />
         </div>
         <div className="pl-4">
-          <h1 className="text-2xl font-semibold text-white/70">6</h1>
+          <h1 className="text-2xl font-semibold text-white/70">{totalAppointments.length}</h1>
           <p className="text-gray-400">Total Appointments</p>
         </div>
       </div>
@@ -44,7 +44,7 @@ function AdminStats() {
           <Calendar size={30} />
         </div>
         <div className="pl-4">
-          <h1 className="text-2xl font-semibold text-white/70">4</h1>
+          <h1 className="text-2xl font-semibold text-white/70">{totalAppointments.filter((app)=> app.status === "COMPLETED").length}</h1>
           <p className="text-gray-400">Completed Appointments</p>
         </div>
       </div>

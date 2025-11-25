@@ -12,7 +12,26 @@ import { axiosInstance } from "./axios"
  }
 
 
- export const updateDoctors = async (data) => {
-    const response = await axiosInstance.put(`/doctors/editDoctor/${data.id}`, data);
+ export const updateDoctors = async ({id , data}) => {
+    const response = await axiosInstance.put(`/doctors/editDoctor/${id}`, data);
     return response.data
+ }
+
+
+ export const createAppointment = async (appData) =>{
+   const response = await axiosInstance.post("/appointments/add" , appData)
+   return response.data;
+ }
+
+
+ export const getAppointment = async () =>{
+   const response = await axiosInstance.get("/appointments/fetch");
+   return response.data;
+   
+ }
+
+
+ export const updateAppointmentStatus = async ({id  , status}) =>{
+    const response = await axiosInstance.patch(`/appointments/update/${id}` ,{status});
+    return response.data.appointment;
  }

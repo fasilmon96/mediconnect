@@ -5,7 +5,9 @@ export const createAppointment = async (req, res) => {
 
     try {
 
-        const { user, doctor, date, time, reason } = req.body;
+        const { doctor, date, time, reason } = req.body;
+
+        const user = req.user._id;
 
         if (!user || !doctor || !date || !time || !reason) {
             return res.status(400).json({ message: "All fields are required" });
@@ -22,8 +24,8 @@ export const createAppointment = async (req, res) => {
 
         await Doctor.findByIdAndUpdate(
             doctor,
-            {$push :{appointments : appointment._id}},
-            {new : true}
+            { $push: { appointments: appointment._id } },
+            { new: true }
 
         )
 
@@ -34,31 +36,63 @@ export const createAppointment = async (req, res) => {
     }
 };
 
-
 export const getAppointment = async (req, res) => {
-
     try {
-        const appointments = await Appointment.find({})
-            .populate("user", "fullName email")
-            .populate("doctor", "name speciality")
 
-        if (!appointments || appointments.length === 0) {
-            return res.status(400).json({ message: "No appointments found" });
-        }
+        const userId = req.user._id;
+        const now = new Date();
+
+        const allAppointments = await Appointment.find({})
+            .populate("user", "fullName email")
+            .populate("doctor", "name speciality imageUrl");
+
+        const allUserAppointments = await Appointment.find({user : userId})
+            .populate("user", "fullName email")
+            .populate("doctor", "name speciality imageUrl");
+
+        const upcomingAppointmentsFilter = {
+            user: userId,
+            $expr: {
+                $gt: [
+                    {
+                        $dateFromString: {
+                            dateString: {
+                                $concat: [
+                                    { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                                    " ",
+                                    "$time"
+                                ]
+                            },
+                            format: "%Y-%m-%d %H:%M",
+                            timezone: "Asia/Kolkata",
+                        }
+                    },
+                    now
+                ]
+            }
+        };
+
+        const upcomingAppointments = await Appointment.find(upcomingAppointmentsFilter)
+            .populate("user", "fullName email")
+            .populate("doctor", "name speciality imageUrl")
+            .sort({
+                date: 1,
+                time: 1
+            });
 
 
         res.status(200).json({
-            count: appointments.length,
-            appointments
-        })
+            allUserAppointments : allUserAppointments,
+            totalCount: allAppointments.length,
+            totalAppointments: allAppointments,
+            appointments: upcomingAppointments
+        });
 
     } catch (error) {
-        console.log("Error getAppointment controller", error)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.error("Error fetching appointments:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-
-
 
 export const updateAppointment = async (req, res) => {
 
@@ -76,14 +110,15 @@ export const updateAppointment = async (req, res) => {
             return res.status(401).json({ message: "Status field is required" });
         }
 
-        const appointment = await Appointment.findByIdAndUpdate(id);
+        const appointment = await Appointment.findByIdAndUpdate(
+            id,
+            { status },          
+            { new: true }     
+        );
 
         if (!appointment) return res.status(400).josn({ message: "Appointment not found" });
 
-        appointment.status = status
-
-        await appointment.save();
-
+    
         res.status(200).json({
             message: `Appointment marked as ${status}`,
             appointment
@@ -93,6 +128,6 @@ export const updateAppointment = async (req, res) => {
     } catch (error) {
         console.log("Error updateAppointment controller", error);
         res.status(500).json({ message: "Internal Server Error" });
-  
-}
+
+    }
 }
