@@ -8,7 +8,7 @@ import { adminRoute, protectRoute } from "../middleware/auth_middleware.js";
 
  router.post("/add" , createAppointment)
  router.get("/fetch" , getAppointment)
- router.put("/update/:id" , adminRoute, updateAppointment) 
+ router.patch("/update/:id" , adminRoute, updateAppointment) 
 
 
 
